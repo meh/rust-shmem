@@ -1,6 +1,6 @@
 [package]
 name    = "shmem"
-version = "0.1.0"
+version = "0.2.0"
 
 authors = ["meh. <meh@schizofreni.co>"]
 license = "WTFPL"
@@ -11,4 +11,6 @@ keywords    = ["font", "bdf"]
 
 [dependencies]
 libc = "0.2"
-nix  = "0.6"
+
+[target.'cfg(unix)'.dependencies]
+nix = "0.6"
