@@ -2,8 +2,9 @@
 extern crate nix;
 extern crate libc;
 
-use std::path::Path;
-use std::mem;
+/// Marker to define a type as safe to share.
+pub unsafe trait Safe { }
+unsafe impl<T: Copy + 'static> Safe for T { }
 
 mod error;
 pub use error::{Error, Result};
@@ -11,19 +12,9 @@ pub use error::{Error, Result};
 mod object;
 pub use object::Object;
 
-mod map;
-pub use map::Map;
+pub mod array;
+pub use array::{Owned as Array, Reference as ArrayRef, Mutable as ArrayMut};
 
-mod map_ref;
-pub use map_ref::MapRef;
-
-mod map_mut;
-pub use map_mut::MapMut;
-
-pub fn create<T: Copy + 'static, P: AsRef<Path>>(path: P) -> Result<Map<T>> {
-	try!(Object::create(path, mem::size_of::<T>() as isize)).into()
-}
-
-pub fn open<T: Copy + 'static, P: AsRef<Path>>(path: P) -> Result<Map<T>> {
-	try!(Object::open(path)).into()
-}
+pub mod map;
+pub use map::{Owned as Map, Reference as MapRef, Mutable as MapMut};
+pub use map::{create, open};

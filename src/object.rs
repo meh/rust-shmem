@@ -10,9 +10,6 @@ use nix::fcntl::{O_CREAT, O_RDWR};
 use nix::sys::stat::{S_IRUSR, S_IWUSR};
 
 use error;
-use map::Map;
-use map_ref::MapRef;
-use map_mut::MapMut;
 
 /// A shared object.
 pub struct Object {
@@ -50,21 +47,6 @@ impl Object {
 
 			created: false,
 		})
-	}
-
-	/// Map the object into the given type.
-	pub fn into<T: Copy + 'static>(self) -> error::Result<Map<T>> {
-		Map::new(self)
-	}
-
-	/// Map the object to the given type.
-	pub fn as_ref<T: Copy + 'static>(&self) -> error::Result<MapRef<T>> {
-		MapRef::new(self)
-	}
-
-	/// Map the object to the given type, mutably.
-	pub fn as_mut<T: Copy + 'static>(&mut self) -> error::Result<MapMut<T>> {
-		MapMut::new(self)
 	}
 }
 
